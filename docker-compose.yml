@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  webapp:
+    container_name: laravel11-demo
+    image: intuji/apache-php:8.2
+    expose:
+      - 80
+    ports:
+      - 8080:80
+    working_dir: /var/www/html
+    depends_on:
+      - database
+    volumes:
+      - ./html:/var/www/html
+      - ./config/php.ini:/etc/php/8.2/apache2/conf.d/99-local.ini
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: database
+      MYSQL_PASSWORD: database
+
+  database:
+    container_name: database
+    restart: always
+    image: mysql:8
+    volumes:
+      - ./db:/var/lib/mysql
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: database
+      MYSQL_USER: database
+      MYSQL_PASSWORD: database
+      MYSQL_DATABASE: laravel
